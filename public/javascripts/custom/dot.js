@@ -11,7 +11,7 @@ Dot.prototype.destroy = function() {
 Dot.prototype.html = function() {
   var htmlStart = "<td class=\"";
   var htmlEnd = "\"><i class=\"fa fa-circle fa-2x\"></i></td>";
-  return htmlStart + this.color() + htmlEnd;
+  return htmlStart + this.color + htmlEnd;
 };
 
 Dot.prototype.neighbors = function() {
@@ -31,14 +31,14 @@ Dot.prototype.neighborCoordinates = function() {
 };
 
 Dot.prototype.vertNBCoords = function() {
-  var xCoord = this.coordinates()[0];
-  var yCoord = this.coordinates()[1];
+  var xCoord = this.coordinates[0];
+  var yCoord = this.coordinates[1];
   return [[xCoord -1, yCoord],[xCoord + 1, yCoord]];
 };
 
 Dot.prototype.diagAndHorzNBCoords = function() {
-  var xCoord = this.coordinates()[0];
-  var yCoord = this.coordinates()[1];
+  var xCoord = this.coordinates[0];
+  var yCoord = this.coordinates[1];
   return [
     [xCoord -1, yCoord - 1],
     [xCoord -1, yCoord + 1],

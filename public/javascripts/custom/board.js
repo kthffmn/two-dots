@@ -1,4 +1,7 @@
-var COLORS = ["blue", "green", "purple", "red", "yellow"];
+function sample(list) {
+  var random = list[Math.floor(Math.random()*list.length)];
+  return random;
+}
 
 function Board(width) {
   this.width = width;
@@ -7,9 +10,11 @@ function Board(width) {
 }
 
 Board.prototype.randomColor = function() {
-  var color = COLORS[Math.floor(Math.random()*COLORS.length)];
-  return color;
+  var colors = ["blue", "green", "purple", "red", "yellow"];
+  return sample(colors);
 }
+
+
 
 Board.prototype.makeBoard = function() {
   var html = this.makeHTML();
@@ -39,26 +44,27 @@ Board.prototype.makeRow = function(yAxis) {
 };
 
 Board.prototype.makeDot = function(xAxis, yAxis) {
-  var color = this.randomColor;
+  var color = this.randomColor();
   var coordinates = [xAxis, yAxis];
   var dot = new Dot(coordinates, color, this);
-  this.dots.push(dot);
   return dot;
 };
 
 Board.prototype.findDot = function(coordinates) {
   var xAxis = coordinates[0];
   var yAxis = coordinates[1];
-  if (xAxis >= 0 && yAxis >= 0 && xAxis < this.width() && yAxis < this.width()) {
-    return this.dots()[yAxis][xAxis];
+  if (xAxis >= 0 && yAxis >= 0 && xAxis < this.width && yAxis < this.width) {
+    return this.dots[yAxis][xAxis];
   }
   return false;
 };
 
 Board.prototype.findDots = function(coords) {
   var foundDots = [];
+  var that = this;
   coords.forEach(function(coordinates) {
-    var found = this.findDot(coordinates);
+    // debugger;
+    var found = that.findDot(coordinates);
     if (found) foundDots.push(found);
   });
   return foundDots;
