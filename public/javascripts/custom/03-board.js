@@ -32,19 +32,40 @@ Board.prototype.addListeners = function() {
   this.addMouseUp();
 }
 
+
+Board.prototype.addMouseDown = function() {
+  var that = this;
+  $(".dot").mousedown(function() {
+    var x = $(this).attr("xaxis");
+    var y = $(this).attr("yaxis");
+    var dot = that.findDot([ x, y ]);
+    dot.activate();
+  });
+}
+
 Board.prototype.addMouseUp = function() {
   var that = this;
   $(".dot").mouseup(function() {
     if (that.selectedDots.length > 1) {
       that.destroyDots();
+    } else {
+      that.resetBoard();
     }
   });
+}
+
+Board.prototype.resetBoard = function() {
+  this.selectedDots.forEach(function(dot) {
+    dot.deactivate();
+  });
+  this.selectedDots = [];
 }
 
 Board.prototype.destroyDots = function() {
   this.selectedDots.forEach(function(dot) {
     dot.destroy();
   });
+  this.selectedDots = [];
   this.redrawBoard();
 }
 
@@ -59,15 +80,6 @@ Board.prototype.getUpdatedHTML  = function() {
   //       current this.dots() data
 }
 
-Board.prototype.addMouseDown = function() {
-  var that = this;
-  $(".dot").mousedown(function() {
-    var x = $(this).attr("xaxis");
-    var y = $(this).attr("yaxis");
-    var dot = that.findDot([ x, y ]);
-    dot.makeActive();
-  });
-}
 
 Board.prototype.makeHTML = function() {
   var html = "<table class=\"table\">";

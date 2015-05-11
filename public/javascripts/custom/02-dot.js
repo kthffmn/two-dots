@@ -58,9 +58,13 @@ Dot.prototype.findDOMObject = function() {
   return $(dot);
 }
 
-Dot.prototype.makeActive = function() {
+Dot.prototype.activate = function() {
   var visibleDot = this.findDOMObject();
   visibleDot.addClass("active");
   this.board.selectedColor = this.color;
   this.board.selectedDots.push(this);
+}
+
+Dot.prototype.deactivate = function() {
+  // todo: remove active class
 }
