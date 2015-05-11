@@ -20,31 +20,32 @@ Dot.prototype.neighbors = function() {
 };
 
 Dot.prototype.neighborCoordinates = function() {
-  var coords = [];
-  var neighborCoords = [this.vertNBCoords(), this.diagAndHorzNBCoords()];
-  neighborCoords.forEach(function(arrays) {
-    arrays.forEach(function(coordinates) {
-      coords.push(coordinates);
-    });
-  });
-  return coords;
-};
-
-Dot.prototype.vertNBCoords = function() {
-  var xCoord = this.coordinates[0];
-  var yCoord = this.coordinates[1];
-  return [[xCoord -1, yCoord],[xCoord + 1, yCoord]];
-};
-
-Dot.prototype.diagAndHorzNBCoords = function() {
-  var xCoord = this.coordinates[0];
-  var yCoord = this.coordinates[1];
+  var x = this.coordinates[0];
+  var y = this.coordinates[1];
   return [
-    [xCoord -1, yCoord - 1],
-    [xCoord -1, yCoord + 1],
-    [xCoord + 1, yCoord - 1],
-    [xCoord + 1, yCoord + 1],
-    [xCoord, yCoord - 1],
-    [xCoord, yCoord + 1]
+    [x - 1, y - 1],
+    [x - 1, y + 1],
+    [x + 1, y - 1],
+    [x + 1, y + 1],
+    [x,     y - 1],
+    [x,     y + 1],
+    [x - 1, y    ],
+    [x + 1, y    ]
   ];
+};
+
+Dot.prototype.aboveDots = function() {
+  var aboveCoords = this.aboveCoordinates();
+  return this.board.findDots(aboveCoords);
+};
+
+Dot.prototype.aboveCoordinates = function() {
+  var coords = [];
+  var x = this.coordinates[0];
+  var y = this.coordinates[1];
+  var max = this.board.width;
+  for (y; y < max; y ++) {
+    
+  }
+  debugger;
 };

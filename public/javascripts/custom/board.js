@@ -14,11 +14,13 @@ Board.prototype.randomColor = function() {
   return sample(colors);
 }
 
-
-
 Board.prototype.makeBoard = function() {
   var html = this.makeHTML();
-  $("#board").html(html);
+  $("#board").fadeOut(1000, function() {
+    $("#board").html(html);
+    $("#board").fadeIn(1000, function() {
+    });
+  });
 }
 
 Board.prototype.makeHTML = function() {
