@@ -41,11 +41,7 @@ Dot.prototype.aboveDots = function() {
 
 Dot.prototype.aboveCoordinates = function() {
   var coords = [];
-  var x = this.coordinates[0];
-  var y = this.coordinates[1];
-  var max = this.board.width;
-  for (y; y < max; y ++) {
-    
-  }
-  debugger;
+  var y = this.coordinates[1] - 1;
+  for (y; y >= 0; y --) coords.push([this.coordinates[0], y]);
+  return coords
 };
