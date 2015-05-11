@@ -1,0 +1,27 @@
+td {
+  text-align: center;
+}
+
+.jumbotron {
+  margin-top: 10px;
+}
+
+.green {
+  color: #5BC99A;
+}
+
+.blue {
+  color: #6F8AC1;
+}
+
+.purple {
+  color: #B1437B;
+}
+
+.red {
+  color: #FF0048;
+}
+
+.yellow {
+  color: #FFD154;
+}
