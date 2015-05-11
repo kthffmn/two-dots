@@ -7,6 +7,8 @@ function Board(width) {
   this.width = width;
   this.dots = [];
   this.score = 0;
+  this.selectedColor = "not yet defined";
+  this.selectedDots = [];
 }
 
 Board.prototype.randomColor = function() {
@@ -16,10 +18,54 @@ Board.prototype.randomColor = function() {
 
 Board.prototype.makeBoard = function() {
   var html = this.makeHTML();
+  var that = this;
   $("#board").fadeOut(1000, function() {
     $("#board").html(html);
     $("#board").fadeIn(1000, function() {
+      that.addListeners();
     });
+  });
+}
+
+Board.prototype.addListeners = function() {
+  this.addMouseDown();
+  this.addMouseUp();
+}
+
+Board.prototype.addMouseUp = function() {
+  var that = this;
+  $(".dot").mouseup(function() {
+    if (that.selectedDots.length > 1) {
+      that.destroyDots();
+    }
+  });
+}
+
+Board.prototype.destroyDots = function() {
+  this.selectedDots.forEach(function(dot) {
+    dot.destroy();
+  });
+  this.redrawBoard();
+}
+
+Board.prototype.redrawBoard  = function() {
+  var html = this.getUpdatedHTML();
+  $("#board").html(html);
+  this.addListeners();
+}
+
+Board.prototype.getUpdatedHTML  = function() {
+  // todo: make a method that will generate HTML based on the
+  //       current this.dots() data
+}
+
+Board.prototype.addMouseDown = function() {
+  var that = this;
+  $(".dot").mousedown(function() {
+    var x = $(this).attr("xaxis");
+    var y = $(this).attr("yaxis");
+    var dot = that.findDot([ x, y ]);
+    dot.makeActive();
   });
 }
 
@@ -65,7 +111,6 @@ Board.prototype.findDots = function(coords) {
   var foundDots = [];
   var that = this;
   coords.forEach(function(coordinates) {
-    // debugger;
     var found = that.findDot(coordinates);
     if (found) foundDots.push(found);
   });

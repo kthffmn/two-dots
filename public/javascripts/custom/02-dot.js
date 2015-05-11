@@ -6,12 +6,16 @@ function Dot(coordinates, color, board) {
 
 Dot.prototype.destroy = function() {
   this.board.score += 1;
+  // todo: move other dots down
+  // todo: delete this.findDOMObject() from DOM
 };
 
 Dot.prototype.html = function() {
-  var htmlStart = "<td class=\"";
+  var x = this.coordinates[0];
+  var y = this.coordinates[1];
+  var html = "<td xaxis=\"" + x + "\" yaxis=\"" + y + "\" class=\"dot ";
   var htmlEnd = "\"><i class=\"fa fa-circle fa-2x\"></i></td>";
-  return htmlStart + this.color + htmlEnd;
+  return html + this.color + htmlEnd;
 };
 
 Dot.prototype.neighbors = function() {
@@ -42,6 +46,21 @@ Dot.prototype.aboveDots = function() {
 Dot.prototype.aboveCoordinates = function() {
   var coords = [];
   var y = this.coordinates[1] - 1;
-  for (y; y >= 0; y --) coords.push([this.coordinates[0], y]);
+  for (y; y >= 0; y--) coords.push([this.coordinates[0], y]);
   return coords
 };
+
+Dot.prototype.findDOMObject = function() {
+  var x = this.coordinates[0];
+  var y = this.coordinates[1];
+  var row = $("tbody").children()[y];
+  var dot = $(row).children()[x];
+  return $(dot);
+}
+
+Dot.prototype.makeActive = function() {
+  var visibleDot = this.findDOMObject();
+  visibleDot.addClass("active");
+  this.board.selectedColor = this.color;
+  this.board.selectedDots.push(this);
+}
