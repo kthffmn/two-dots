@@ -2,6 +2,10 @@ td {
   text-align: center;
 }
 
+.table th, .table td { 
+     border-top: none !important; 
+ }
+
 .jumbotron {
   margin-top: 10px;
 }
