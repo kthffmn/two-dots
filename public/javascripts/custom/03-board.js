@@ -9,11 +9,6 @@ function Board(width) {
   this.dragging = false;
 }
 
-Board.prototype.randomColor = function() {
-  var colors = ["blue", "green", "purple", "red", "yellow"];
-  return sample(colors);
-}
-
 Board.prototype.makeBoard = function() {
   var html = this.makeHTML();
   var that = this;
@@ -55,17 +50,16 @@ Board.prototype.addMouseUp = function() {
 Board.prototype.addHover = function() {
   var that = this;
   $(".dot").mouseenter(function() {
-    console.log("line 58");
+    console.log("1: why do I never get hit????");
     if (this.dragging) {
-      console.log("why do I never get hit????");
-      debugger;
+      console.log("2: why do I never get hit????");
       var dot = that.turnjQueryToDot($(this));
       if (that.validDrag(dot)) {
         dot.activate();
       }
     }
   }).mouseleave(function() {
-    console.log("line 68");
+    console.log("3: why do I never get hit????");
   });
 }
 
@@ -102,6 +96,7 @@ Board.prototype.resetBoard = function() {
     dot.deactivate();
   });
   this.selectedDots = [];
+  this.selectedColor = "none";
 }
 
 Board.prototype.destroyDots = function() {
@@ -109,6 +104,7 @@ Board.prototype.destroyDots = function() {
     dot.destroy();
   });
   this.selectedDots = [];
+  this.selectedColor = "none";
   this.redrawBoard();
 }
 
@@ -152,6 +148,16 @@ Board.prototype.makeDot = function(xAxis, yAxis) {
   return dot;
 };
 
+Board.prototype.findDots = function(coords) {
+  var foundDots = [];
+  var that = this;
+  coords.forEach(function(coordinates) {
+    var found = that.findDot(coordinates);
+    if (found) foundDots.push(found);
+  });
+  return foundDots;
+}
+
 Board.prototype.findDot = function(coordinates) {
   var x = coordinates[0];
   var y = coordinates[1];
@@ -163,12 +169,7 @@ Board.prototype.validCoordinates = function(x,y) {
   return x >= 0 && y >= 0 && x < this.width && y < this.width;
 }
 
-Board.prototype.findDots = function(coords) {
-  var foundDots = [];
-  var that = this;
-  coords.forEach(function(coordinates) {
-    var found = that.findDot(coordinates);
-    if (found) foundDots.push(found);
-  });
-  return foundDots;
+Board.prototype.randomColor = function() {
+  var colors = ["blue", "green", "purple", "red", "yellow"];
+  return sample(colors);
 }
