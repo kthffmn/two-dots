@@ -41,29 +41,36 @@ Board.prototype.addMouseDown = function() {
 }
 
 Board.prototype.addMouseUp = function() {
-  // this.dragging = false;
-  // var that = this;
-  // $(".dot").mouseup(function() {
-  //   if (that.selectedDots.length > 1) {
-  //     that.destroyDots();
-  //   } else {
-  //     that.resetBoard();
-  //   }
-  // });
-}
-
-Board.prototype.lastSelectedDot = function() {
-  return this.selectedDots[this.selectedDots.length - 1];
+  var that = this;
+  $(".dot").mouseup(function() {
+    if (that.selectedDots.length > 1) {
+      that.destroyDots();
+    } else {
+      that.resetBoard();
+    }
+    that.dragging = false;
+  });
 }
 
 Board.prototype.addHover = function() {
   var that = this;
-  $(".dot").mouseover(function() {
-    var dot = that.turnjQueryToDot($(this));
-    if (this.dragging && that.validDrag(dot)) {
-      dot.activate();
+  $(".dot").mouseenter(function() {
+    console.log("line 58");
+    if (this.dragging) {
+      console.log("why do I never get hit????");
+      debugger;
+      var dot = that.turnjQueryToDot($(this));
+      if (that.validDrag(dot)) {
+        dot.activate();
+      }
     }
+  }).mouseleave(function() {
+    console.log("line 68");
   });
+}
+
+Board.prototype.lastSelectedDot = function() {
+  return getLastElement(this.selectedDots);
 }
 
 Board.prototype.turnjQueryToDot = function(element) {
@@ -115,7 +122,6 @@ Board.prototype.getUpdatedHTML  = function() {
   // todo: make a method that will generate HTML based on the
   //       current this.dots() data
 }
-
 
 Board.prototype.makeHTML = function() {
   var html = "<div class=\"row\">";
