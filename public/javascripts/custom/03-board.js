@@ -32,26 +32,24 @@ Board.prototype.addListeners = function() {
 }
 
 Board.prototype.addMouseDown = function() {
-  this.dragging = true;
   var that = this;
   $(".dot").mousedown(function() {
-    var x = $(this).data("xaxis");
-    var y = $(this).data("yaxis");
-    var dot = that.findDot([ x, y ]);
+    var dot = that.turnjQueryToDot($(this));
     dot.activate();
+    that.dragging = true;
   });
 }
 
 Board.prototype.addMouseUp = function() {
-  this.dragging = false;
-  var that = this;
-  $(".dot").mouseup(function() {
-    if (that.selectedDots.length > 1) {
-      that.destroyDots();
-    } else {
-      that.resetBoard();
-    }
-  });
+  // this.dragging = false;
+  // var that = this;
+  // $(".dot").mouseup(function() {
+  //   if (that.selectedDots.length > 1) {
+  //     that.destroyDots();
+  //   } else {
+  //     that.resetBoard();
+  //   }
+  // });
 }
 
 Board.prototype.lastSelectedDot = function() {
@@ -61,21 +59,35 @@ Board.prototype.lastSelectedDot = function() {
 Board.prototype.addHover = function() {
   var that = this;
   $(".dot").mouseover(function() {
-    if (that.validDrag(this)) {
-
+    var dot = that.turnjQueryToDot($(this));
+    if (this.dragging && that.validDrag(dot)) {
+      dot.activate();
     }
   });
 }
 
-Board.prototype.validDrag = function(element) {
-  return $(element).hasClass(this.color) && this.isNeighbor(element) && this.dragging
+Board.prototype.turnjQueryToDot = function(element) {
+  var x = $(element).data("xaxis");
+  var y = $(element).data("yaxis");
+  var dot = this.findDot([x,y]);
+  return dot;
 }
 
-Board.prototype.isNeighbor = function(element) {
-  var x = element.data("xaxis");
-  var y = element.data("yAxis");
-  var dot = this.findDot([ x, y ]);
-  return this.lastSelectedDot().neighbors().indexOf(dot) > -1;
+Board.prototype.validDrag = function(dot) {
+  return this.rightColor(dot) && this.isNeighbor(dot) && this.notAlreadySelected(dot);
+}
+
+Board.prototype.rightColor = function(dot) {
+  return dot.color == this.selectedColor;
+}
+
+Board.prototype.isNeighbor = function(dot) {
+  var neighbors = this.lastSelectedDot().neighbors();
+  return elementIncluded(neighbors, dot);
+}
+
+Board.prototype.notAlreadySelected = function(dot) {
+  return elementIncluded(this.selectedDots, dot);
 }
 
 Board.prototype.resetBoard = function() {
@@ -135,13 +147,15 @@ Board.prototype.makeDot = function(xAxis, yAxis) {
 };
 
 Board.prototype.findDot = function(coordinates) {
-  var xAxis = coordinates[0];
-  var yAxis = coordinates[1];
-  if (xAxis >= 0 && yAxis >= 0 && xAxis < this.width && yAxis < this.width) {
-    return this.dots[xAxis][yAxis];
-  }
+  var x = coordinates[0];
+  var y = coordinates[1];
+  if (this.validCoordinates(x,y)) return this.dots[x][y];
   return false;
 };
+
+Board.prototype.validCoordinates = function(x,y) {
+  return x >= 0 && y >= 0 && x < this.width && y < this.width;
+}
 
 Board.prototype.findDots = function(coords) {
   var foundDots = [];
