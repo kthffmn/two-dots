@@ -1,14 +1,10 @@
-td {
-  text-align: center;
+.active {
+  background-color: #EEE;
 }
 
-.table th, .table td { 
-     border-top: none !important; 
- }
-
- .col-md-6 {
+.col-md-6 {
   text-align: center;
- }
+}
 
 .jumbotron {
   margin-top: 15px;

@@ -61,8 +61,8 @@ Dot.prototype.aboveCoordinates = function() {
 Dot.prototype.findDOMObject = function() {
   var x = this.coordinates[0];
   var y = this.coordinates[1];
-  var row = $("tbody").children()[y];
-  var dot = $(row).children()[x];
+  var selector = '*[data-xaxis="'+ x + '"][data-yaxis="' + y + '"]';
+  var dot = $(selector);
   return $(dot);
 }
 
