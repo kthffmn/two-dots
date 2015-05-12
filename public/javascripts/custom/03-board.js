@@ -1,10 +1,7 @@
-function sample(list) {
-  var random = list[Math.floor(Math.random()*list.length)];
-  return random;
-}
-
 function Board(width) {
+  if (width > 12 || width < 2) alert("Board size must be between 2 and 12");
   this.width = width;
+  this.columnSize = Math.floor(12/width);
   this.dots = [];
   this.score = 0;
   this.selectedColor = "not yet defined";
@@ -31,7 +28,6 @@ Board.prototype.addListeners = function() {
   this.addMouseDown();
   this.addMouseUp();
 }
-
 
 Board.prototype.addMouseDown = function() {
   var that = this;
@@ -82,24 +78,24 @@ Board.prototype.getUpdatedHTML  = function() {
 
 
 Board.prototype.makeHTML = function() {
-  var html = "<table class=\"table\">";
-  var htmlEnd = "</table>";
+  var html = "<div class=\"row\">";
+  var htmlEnd = "</div>";
   for (var yAxis = 0; yAxis < this.width; yAxis++ ) {
-    html += this.makeRow(yAxis);
+    html += this.makeColumn(yAxis);
   }
   return html + htmlEnd;
 };
 
-Board.prototype.makeRow = function(yAxis) {
-  var html = "<tr>";
-  var htmlEnd = "</tr>";
-  var rowDots = [];
+Board.prototype.makeColumn = function(yAxis) {
+  var html = "<div class=\"col-xs-" +  this.columnSize + " col-sm-" + this.columnSize + " col-md-" + this.columnSize + "\">";
+  var htmlEnd = "</div>";
+  var column = [];
   for (var xAxis = 0; xAxis < this.width; xAxis++ ) {
     var dot = this.makeDot(xAxis, yAxis);
-    rowDots.push(dot);
+    column.push(dot);
     html += dot.html();
   }
-  this.dots.push(rowDots);
+  this.dots.push(column);
   return html + htmlEnd;
 };
 
@@ -114,7 +110,7 @@ Board.prototype.findDot = function(coordinates) {
   var xAxis = coordinates[0];
   var yAxis = coordinates[1];
   if (xAxis >= 0 && yAxis >= 0 && xAxis < this.width && yAxis < this.width) {
-    return this.dots[yAxis][xAxis];
+    return this.dots[xAxis][yAxis];
   }
   return false;
 };

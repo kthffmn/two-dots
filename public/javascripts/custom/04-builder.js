@@ -1,3 +1,3 @@
-var width = 5;
+var width = 6;
 var board = new Board(width);
 board.makeBoard();

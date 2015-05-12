@@ -6,6 +6,14 @@ function Dot(coordinates, color, board) {
 
 Dot.prototype.destroy = function() {
   this.board.score += 1;
+  this.aboveDots().forEach(function(dot) {
+    var x = dot.coordinates[0];
+    var y = dot.coordinates[1];
+    // todo: delete this this.board.dots[y][x]
+
+    this.board.dots[y + 1].push()
+    dot.coordinates = [x, y + 1];
+  });
   // todo: move other dots down
   // todo: delete this.findDOMObject() from DOM
 };
@@ -13,8 +21,8 @@ Dot.prototype.destroy = function() {
 Dot.prototype.html = function() {
   var x = this.coordinates[0];
   var y = this.coordinates[1];
-  var html = "<td xaxis=\"" + x + "\" yaxis=\"" + y + "\" class=\"dot ";
-  var htmlEnd = "\"><i class=\"fa fa-circle fa-2x\"></i></td>";
+  var html = "<div data-xaxis=\"" + x + "\" data-yaxis=\"" + y + "\" class=\"row dot ";
+  var htmlEnd = "\"><i class=\"fa fa-circle fa-2x\"></i></div>";
   return html + this.color + htmlEnd;
 };
 
@@ -66,5 +74,6 @@ Dot.prototype.activate = function() {
 }
 
 Dot.prototype.deactivate = function() {
-  // todo: remove active class
+  var visibleDot = this.findDOMObject();
+  visibleDot.removeClass("active");
 }
