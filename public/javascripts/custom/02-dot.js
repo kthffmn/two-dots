@@ -35,10 +35,6 @@ Dot.prototype.neighborCoordinates = function() {
   var x = this.coordinates[0];
   var y = this.coordinates[1];
   return [
-    [x - 1, y - 1],
-    [x - 1, y + 1],
-    [x + 1, y - 1],
-    [x + 1, y + 1],
     [x,     y - 1],
     [x,     y + 1],
     [x - 1, y    ],

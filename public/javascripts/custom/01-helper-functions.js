@@ -10,3 +10,10 @@ function elementIncluded(list, element) {
 function getLastElement(list) {
   return list[list.length - 1];
 }
+
+$.fn.disableSelection = function() {
+  return this
+    .attr('unselectable', 'on')
+    .css('user-select', 'none')
+    .on('selectstart', false);
+};

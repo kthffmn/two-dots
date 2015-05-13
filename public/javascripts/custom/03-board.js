@@ -50,16 +50,15 @@ Board.prototype.addMouseUp = function() {
 Board.prototype.addHover = function() {
   var that = this;
   $(".dot").mouseenter(function() {
-    console.log("1: why do I never get hit????");
-    if (this.dragging) {
-      console.log("2: why do I never get hit????");
+    console.log("dragging " + that.dragging);
+    if (that.dragging) {
       var dot = that.turnjQueryToDot($(this));
       if (that.validDrag(dot)) {
         dot.activate();
       }
     }
   }).mouseleave(function() {
-    console.log("3: why do I never get hit????");
+    console.log("out");
   });
 }
 
@@ -88,7 +87,7 @@ Board.prototype.isNeighbor = function(dot) {
 }
 
 Board.prototype.notAlreadySelected = function(dot) {
-  return elementIncluded(this.selectedDots, dot);
+  return !elementIncluded(this.selectedDots, dot);
 }
 
 Board.prototype.resetBoard = function() {
