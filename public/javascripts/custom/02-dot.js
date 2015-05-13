@@ -7,51 +7,41 @@ function Dot(coordinates, color, board) {
 Dot.prototype.removeThisFromArray = function() {
   var x = this.coordinates[0];
   var y = this.coordinates[1];
-  this.board.dots[x].splice(y, 1);
   this.adjustAboveDotCoordinates();
+  deleteAt(this.column, y);
 }
 
+
 Dot.prototype.adjustAboveDotCoordinates = function() {
-  this.board.dots[x].forEach(function(dot) {
+  this.aboveDots.forEach(function(dot) {
     var x = dot.coordinates[0];
     var y = dot.coordinates[1];
     dot.coordinates = [x, y + 1]
   });
 }
 
-Dot.prototype.moveDownOne = function() {
-  // todo: not sure, need to think on this...
-}
-
-Dot.prototype.dropDown = function() {
-  this.moveOrRemoveThis();
-  this.fillInSpaceLeft();
+Dot.prototype.aboveDots = function() {
+  // todo: return dots above this dot
+  return this.column()
 }
 
 Dot.prototype.fillInSpaceLeft = function() {
-  if (aboveDot) {
-    aboveDot.dropDown();
-  } else {
-    this.board.createNewDot(x,y)
-  }
+  
 }
 
-Dot.prototype.moveOrRemoveThis = function() {
-  if (atBottom) {
-    this.removeThisFromArray();
-  } else {
-    this.moveDownOne();
-  }
-}
+Dot.prototype.destroy = function() {
+  this.board.score += 1;
+  this.removeThisFromArray();
+  this.fillInSpaceLeft();
+};
 
 Dot.prototype.atBottom = function() {
   return this.coordinates[1] > this.board.width;
 }
 
-Dot.prototype.destroy = function() {
-  this.board.score += 1;
-  this.dropDown();
-};
+Dot.prototype.column = function() {
+  return this.board.dots[x];
+}
 
 Dot.prototype.html = function() {
   var x = this.coordinates[0];
@@ -80,10 +70,12 @@ Dot.prototype.neighborCoordinates = function() {
 Dot.prototype.aboveDot = function() {
   var aboveCoords = this.aboveCoordinate();
   return this.board.findDot(aboveCoords);
+  // todo: refactor
 };
 
 Dot.prototype.aboveCoordinate = function() {
   return [this.coordinates[0], (this.coordinates[1] - 1)]
+  // todo: refactor
 };
 
 Dot.prototype.findDOMObject = function() {
