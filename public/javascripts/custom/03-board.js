@@ -14,10 +14,15 @@ Board.prototype.makeBoard = function() {
   var that = this;
   $("#board").fadeOut(1000, function() {
     $("#board").html(html);
+    $("#score").html(this.score);
     $("#board").fadeIn(1000, function() {
       that.addListeners();
     });
   });
+}
+
+Board.prototype.createNewDot = function(x,y) {
+  // todo: create a new dot
 }
 
 Board.prototype.addListeners = function() {
@@ -110,6 +115,7 @@ Board.prototype.destroyDots = function() {
 Board.prototype.redrawBoard  = function() {
   var html = this.getUpdatedHTML();
   $("#board").html(html);
+  $("#score").html(this.score);
   this.addListeners();
 }
 

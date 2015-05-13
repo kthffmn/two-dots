@@ -4,18 +4,53 @@ function Dot(coordinates, color, board) {
   this.board = board;
 }
 
-Dot.prototype.destroy = function() {
-  this.board.score += 1;
-  this.aboveDots().forEach(function(dot) {
+Dot.prototype.removeThisFromArray = function() {
+  var x = this.coordinates[0];
+  var y = this.coordinates[1];
+  this.board.dots[x].splice(y, 1);
+  this.adjustAboveDotCoordinates();
+}
+
+Dot.prototype.adjustAboveDotCoordinates = function() {
+  this.board.dots[x].forEach(function(dot) {
     var x = dot.coordinates[0];
     var y = dot.coordinates[1];
-    // todo: delete this this.board.dots[y][x]
-
-    this.board.dots[y + 1].push()
-    dot.coordinates = [x, y + 1];
+    dot.coordinates = [x, y + 1]
   });
-  // todo: move other dots down
-  // todo: delete this.findDOMObject() from DOM
+}
+
+Dot.prototype.moveDownOne = function() {
+  // todo: not sure, need to think on this...
+}
+
+Dot.prototype.dropDown = function() {
+  this.moveOrRemoveThis();
+  this.fillInSpaceLeft();
+}
+
+Dot.prototype.fillInSpaceLeft = function() {
+  if (aboveDot) {
+    aboveDot.dropDown();
+  } else {
+    this.board.createNewDot(x,y)
+  }
+}
+
+Dot.prototype.moveOrRemoveThis = function() {
+  if (atBottom) {
+    this.removeThisFromArray();
+  } else {
+    this.moveDownOne();
+  }
+}
+
+Dot.prototype.atBottom = function() {
+  return this.coordinates[1] > this.board.width;
+}
+
+Dot.prototype.destroy = function() {
+  this.board.score += 1;
+  this.dropDown();
 };
 
 Dot.prototype.html = function() {
@@ -42,16 +77,13 @@ Dot.prototype.neighborCoordinates = function() {
   ];
 };
 
-Dot.prototype.aboveDots = function() {
-  var aboveCoords = this.aboveCoordinates();
-  return this.board.findDots(aboveCoords);
+Dot.prototype.aboveDot = function() {
+  var aboveCoords = this.aboveCoordinate();
+  return this.board.findDot(aboveCoords);
 };
 
-Dot.prototype.aboveCoordinates = function() {
-  var coords = [];
-  var y = this.coordinates[1] - 1;
-  for (y; y >= 0; y--) coords.push([this.coordinates[0], y]);
-  return coords
+Dot.prototype.aboveCoordinate = function() {
+  return [this.coordinates[0], (this.coordinates[1] - 1)]
 };
 
 Dot.prototype.findDOMObject = function() {
