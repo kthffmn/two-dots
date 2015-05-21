@@ -23,7 +23,10 @@ Board.prototype.makeBoard = function() {
 }
 
 Board.prototype.createNewDot = function(x) {
-  var dot = this.makeDot(x, this.width);
+  if (x < 0) {
+    debugger;
+  }
+  var dot = this.makeDot(x, 0);
   var tempDots = this.dots;
   tempDots[x].unshift(dot);
   this.dots = tempDots;
@@ -119,6 +122,7 @@ Board.prototype.destroyDots = function() {
   this.selectedColor = "none";
   this.redrawColumns();
   this.updateScore();
+  this.addListeners();
 }
 
 Board.prototype.updateScore = function() {
@@ -133,9 +137,7 @@ Board.prototype.redrawColumns  = function() {
     column.forEach(function(dot) {
       newHTML += dot.html();
     });
-    $("#column-" + x).html(newHTML, function() {
-      that.addListeners();
-    });
+    $("#column-" + x).html(newHTML);
   });
 }
 
@@ -184,7 +186,6 @@ Board.prototype.findDot = function(coordinates) {
   if (this.validCoordinates(x,y)) {
     return this.dots[x][y];
   } else {
-    // debugger;
     return false;
   }
 };
