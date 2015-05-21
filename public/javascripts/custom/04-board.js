@@ -7,6 +7,7 @@ function Board(width) {
   this.selectedColor = "not yet defined";
   this.selectedDots = [];
   this.dragging = false;
+  this.redrawTheseColumns = [];
 }
 
 Board.prototype.makeBoard = function() {
@@ -21,8 +22,14 @@ Board.prototype.makeBoard = function() {
   });
 }
 
-Board.prototype.createNewDot = function(x,y) {
-  // todo: create a new dot
+Board.prototype.createNewDot = function(x) {
+  var dot = this.makeDot(x, this.width);
+  var tempDots = this.dots;
+  tempDots[x].unshift(dot);
+  this.dots = tempDots;
+  var tempColumns = this.redrawTheseColumns;
+  tempColumns.push(x);
+  this.redrawTheseColumns = tempColumns;
 }
 
 Board.prototype.addListeners = function() {
@@ -35,7 +42,11 @@ Board.prototype.addMouseDown = function() {
   var that = this;
   $(".dot").mousedown(function() {
     var dot = that.turnjQueryToDot($(this));
-    dot.activate();
+    if (dot && typeof dot.activate === 'function') {
+      dot.activate();
+    } else {
+      debugger;
+    }
     that.dragging = true;
   });
 }
@@ -55,15 +66,12 @@ Board.prototype.addMouseUp = function() {
 Board.prototype.addHover = function() {
   var that = this;
   $(".dot").mouseenter(function() {
-    console.log("dragging " + that.dragging);
     if (that.dragging) {
       var dot = that.turnjQueryToDot($(this));
       if (that.validDrag(dot)) {
         dot.activate();
       }
     }
-  }).mouseleave(function() {
-    console.log("out");
   });
 }
 
@@ -109,23 +117,30 @@ Board.prototype.destroyDots = function() {
   });
   this.selectedDots = [];
   this.selectedColor = "none";
-  this.redrawBoard();
+  this.redrawColumns();
+  this.updateScore();
 }
 
-Board.prototype.redrawBoard  = function() {
-  var html = this.getUpdatedHTML();
-  $("#board").html(html);
+Board.prototype.updateScore = function() {
   $("#score").html(this.score);
-  this.addListeners();
 }
 
-Board.prototype.getUpdatedHTML  = function() {
-  // todo: make a method that will generate HTML based on the
-  //       current this.dots() data
+Board.prototype.redrawColumns  = function() {
+  var that = this;
+  this.redrawTheseColumns.forEach(function(x) {
+    var column = that.dots[x];
+    var newHTML = "";
+    column.forEach(function(dot) {
+      newHTML += dot.html();
+    });
+    $("#column-" + x).html(newHTML, function() {
+      that.addListeners();
+    });
+  });
 }
 
 Board.prototype.makeHTML = function() {
-  var html = "<div class=\"row\">";
+  var html = "<div class=\"row board\">";
   var htmlEnd = "</div>";
   for (var xAxis = 0; xAxis < this.width; xAxis++ ) {
     html += this.makeColumn(xAxis);
@@ -134,7 +149,7 @@ Board.prototype.makeHTML = function() {
 };
 
 Board.prototype.makeColumn = function(xAxis) {
-  var html = "<div class=\"col-xs-" +  this.columnSize + " col-sm-" + this.columnSize + " col-md-" + this.columnSize + "\">";
+  var html = "<div id=\"column-" + xAxis + "\" class=\"col-xs-" +  this.columnSize + " col-sm-" + this.columnSize + " col-md-" + this.columnSize + "\">";
   var htmlEnd = "</div>";
   var column = [];
   for (var yAxis = 0; yAxis < this.width; yAxis++ ) {
@@ -166,8 +181,12 @@ Board.prototype.findDots = function(coords) {
 Board.prototype.findDot = function(coordinates) {
   var x = coordinates[0];
   var y = coordinates[1];
-  if (this.validCoordinates(x,y)) return this.dots[x][y];
-  return false;
+  if (this.validCoordinates(x,y)) {
+    return this.dots[x][y];
+  } else {
+    // debugger;
+    return false;
+  }
 };
 
 Board.prototype.validCoordinates = function(x,y) {

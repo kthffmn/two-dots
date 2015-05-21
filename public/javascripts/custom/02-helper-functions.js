@@ -11,13 +11,6 @@ function getLastElement(array) {
   return array[array.length - 1];
 }
 
-$.fn.disableSelection = function() {
-  return this
-    .attr('unselectable', 'on')
-    .css('user-select', 'none')
-    .on('selectstart', false);
-};
-
-function deleteAt(array, index) function() {
+function deleteAt(array, index) {
   array.splice(index, 1);
 }
