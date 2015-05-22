@@ -56,7 +56,7 @@ Board.prototype.addMouseDown = function() {
 
 Board.prototype.addMouseUp = function() {
   var that = this;
-  $(".dot").mouseup(function() {
+  $("body").mouseup(function() {
     if (that.selectedDots.length > 1) {
       that.destroyDots();
     } else {
@@ -115,9 +115,13 @@ Board.prototype.resetBoard = function() {
 }
 
 Board.prototype.destroyDots = function() {
-  this.selectedDots.forEach(function(dot) {
-    dot.destroy();
-  });
+  // if (this.selectedDots.length >= 4 && ) {
+  //   // todo: 
+  // } else {
+    this.selectedDots.forEach(function(dot) {
+      dot.destroy();
+    });
+  // }
   this.selectedDots = [];
   this.selectedColor = "none";
   this.redrawColumns();
