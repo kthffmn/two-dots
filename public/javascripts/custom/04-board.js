@@ -12,66 +12,62 @@ function Board(width) {
 
 Board.prototype.makeBoard = function() {
   var html = this.makeHTML();
-  var that = this;
+  var board = this;
   $("#board").fadeOut(1000, function() {
     $("#board").html(html);
     $("#score").html(this.score);
     $("#board").fadeIn(1000, function() {
-      that.addListeners();
+      board.addListeners();
     });
   });
 }
 
 Board.prototype.createNewDot = function(x) {
-  if (x < 0) {
-    debugger;
-  }
   var dot = this.makeDot(x, 0);
-  var tempDots = this.dots;
-  tempDots[x].unshift(dot);
-  this.dots = tempDots;
-  var tempColumns = this.redrawTheseColumns;
-  tempColumns.push(x);
-  this.redrawTheseColumns = tempColumns;
+  this.dots[x].unshift(dot);
+  if (!elementIncluded(this.redrawTheseColumns, x)) {
+    this.redrawTheseColumns.push(x);
+  }
 }
 
 Board.prototype.addListeners = function() {
+  this.removeAllListeners();
   this.addMouseDown();
   this.addMouseUp();
   this.addHover();
 }
 
+Board.prototype.removeAllListeners = function() {
+  $('.dot').unbind();
+}
+
 Board.prototype.addMouseDown = function() {
-  var that = this;
+  var board = this;
   $(".dot").mousedown(function() {
-    var dot = that.turnjQueryToDot($(this));
-    if (dot && typeof dot.activate === 'function') {
-      dot.activate();
-    } else {
-      debugger;
-    }
-    that.dragging = true;
+    var dot = board.turnjQueryToDot($(this));
+    if (dot) dot.activate();
+    board.dragging = true;
   });
 }
 
 Board.prototype.addMouseUp = function() {
-  var that = this;
+  var board = this;
   $("body").mouseup(function() {
-    if (that.selectedDots.length > 1) {
-      that.destroyDots();
+    if (board.selectedDots.length > 1) {
+      board.destroyDots();
     } else {
-      that.resetBoard();
+      board.resetBoard();
     }
-    that.dragging = false;
+    board.dragging = false;
   });
 }
 
 Board.prototype.addHover = function() {
-  var that = this;
+  var board = this;
   $(".dot").mouseenter(function() {
-    if (that.dragging) {
-      var dot = that.turnjQueryToDot($(this));
-      if (that.validDrag(dot)) {
+    if (board.dragging) {
+      var dot = board.turnjQueryToDot($(this));
+      if (board.validDrag(dot)) {
         dot.activate();
       }
     }
@@ -106,6 +102,10 @@ Board.prototype.notAlreadySelected = function(dot) {
   return !elementIncluded(this.selectedDots, dot);
 }
 
+Board.prototype.sameDot = function(dotA, dotB) {
+  return dotA.coordinates[0] == dotB.coordinates[0] && dotA.coordinates[1] == dotB.coordinates[1];
+}
+
 Board.prototype.resetBoard = function() {
   this.selectedDots.forEach(function(dot) {
     dot.deactivate();
@@ -115,13 +115,9 @@ Board.prototype.resetBoard = function() {
 }
 
 Board.prototype.destroyDots = function() {
-  // if (this.selectedDots.length >= 4 && ) {
-  //   // todo: 
-  // } else {
-    this.selectedDots.forEach(function(dot) {
-      dot.destroy();
-    });
-  // }
+  this.selectedDots.forEach(function(dot) {
+    dot.destroy();
+  });
   this.selectedDots = [];
   this.selectedColor = "none";
   this.redrawColumns();
@@ -134,9 +130,9 @@ Board.prototype.updateScore = function() {
 }
 
 Board.prototype.redrawColumns  = function() {
-  var that = this;
+  var board = this;
   this.redrawTheseColumns.forEach(function(x) {
-    var column = that.dots[x];
+    var column = board.dots[x];
     var newHTML = "";
     column.forEach(function(dot) {
       newHTML += dot.html();
@@ -176,9 +172,9 @@ Board.prototype.makeDot = function(xAxis, yAxis) {
 
 Board.prototype.findDots = function(coords) {
   var foundDots = [];
-  var that = this;
+  var board = this;
   coords.forEach(function(coordinates) {
-    var found = that.findDot(coordinates);
+    var found = board.findDot(coordinates);
     if (found) foundDots.push(found);
   });
   return foundDots;

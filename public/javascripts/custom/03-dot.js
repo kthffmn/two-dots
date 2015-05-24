@@ -4,11 +4,6 @@ function Dot(coordinates, color, board) {
   this.board = board;
 }
 
-Dot.prototype.removeThisFromArray = function() {
-  this.adjustAboveDotCoordinates();
-  this.deleteThisFromArray();
-}
-
 Dot.prototype.deleteThisFromArray = function() {
   var x = this.coordinates[0];
   var y = this.coordinates[1];
@@ -17,21 +12,16 @@ Dot.prototype.deleteThisFromArray = function() {
 
 Dot.prototype.adjustAboveDotCoordinates = function() {
   this.aboveDots().forEach(function(dot) {
-    var x = dot.coordinates[0];
-    var y = dot.coordinates[1];
-    dot.coordinates = [x, y + 1];
+    dot.coordinates[1] += 1;
   });
 }
 
 Dot.prototype.aboveDots = function() {
   var columnDots = this.column();
-  var aboveDots = [];
   var y = this.coordinates[1];
-  columnDots.forEach(function(dot) {
-    var dotY = dot.coordinates[1];
-    if (dotY < y) aboveDots.push(dot);
+  return columnDots.filter(function(dot) {
+    return dot.coordinates[1] < y;
   });
-  return aboveDots;
 }
 
 Dot.prototype.fillInSpaceLeft = function() {
@@ -41,13 +31,10 @@ Dot.prototype.fillInSpaceLeft = function() {
 
 Dot.prototype.destroy = function() {
   this.board.score += 1;
-  this.removeThisFromArray();
+  this.adjustAboveDotCoordinates();
+  this.deleteThisFromArray();
   this.fillInSpaceLeft();
 };
-
-Dot.prototype.atBottom = function() {
-  return this.coordinates[1] > this.board.width;
-}
 
 Dot.prototype.column = function() {
   var x = this.coordinates[0];
