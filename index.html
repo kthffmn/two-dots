@@ -6,10 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="simple object-oriented JavaScript implementation of Two Dots">
     <meta name="author" content="Katie Hoffman">
-    
     <title>Two Dots</title>
     <link rel="icon" href="public/images/icon-1.png">
-
     <link href="public/stylesheets/lib/bootstrap.min.css" rel="stylesheet">
     <link href="public/stylesheets/lib/bootstrap-theme.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
@@ -21,7 +19,14 @@
       <div class="jumbotron">
         <h1>Two Dots</h1>
         <p>This is a basic object-oriented implementation of Two Dots.</p>
-        <p>Score: <span id="score">0</span></p>
+        <div class="row">
+          <div class="col-md-2"><div class="color-score blue-score">0</div></div>
+          <div class="col-md-2"><div class="color-score green-score">0</div></div>
+          <div class="col-md-2"><div class="color-score purple-score">0</div></div>
+          <div class="col-md-2"><div class="color-score red-score">0</div></div>
+          <div class="col-md-2"><div class="color-score yellow-score">0</div></div>
+          <div class="col-md-2"><div class="color-score total-score" id="score">0</div></div>
+        </div><!-- row -->
       </div>
     </div>
 

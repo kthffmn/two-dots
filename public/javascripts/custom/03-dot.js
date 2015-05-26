@@ -7,7 +7,7 @@ function Dot(coordinates, color, board) {
 Dot.prototype.deleteThisFromArray = function() {
   var x = this.coordinates[0];
   var y = this.coordinates[1];
-  this.board[x] = deleteAt(this.column(), y);
+  deleteAt(this.column(), y);
 }
 
 Dot.prototype.adjustAboveDotCoordinates = function() {
@@ -30,7 +30,7 @@ Dot.prototype.fillInSpaceLeft = function() {
 }
 
 Dot.prototype.destroy = function() {
-  this.board.score += 1;
+  eval("this.board." + this.color + "Score += 1");
   this.adjustAboveDotCoordinates();
   this.deleteThisFromArray();
   this.fillInSpaceLeft();
@@ -68,12 +68,10 @@ Dot.prototype.neighborCoordinates = function() {
 Dot.prototype.aboveDot = function() {
   var aboveCoords = this.aboveCoordinate();
   return this.board.findDot(aboveCoords);
-  // todo: refactor
 };
 
 Dot.prototype.aboveCoordinate = function() {
   return [this.coordinates[0], (this.coordinates[1] - 1)]
-  // todo: refactor
 };
 
 Dot.prototype.findDOMObject = function() {

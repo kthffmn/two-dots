@@ -8,7 +8,15 @@ function elementIncluded(array, element) {
 }
 
 function getLastElement(array) {
-  return array[array.length - 1];
+  return getLaterElements(array, 1);
+}
+
+function getSecondToLastElement(array) {
+  return getLaterElements(array, 2);
+}
+
+function getLaterElements(array, index) {
+  return array[array.length - index];
 }
 
 function deleteAt(array, index) {
