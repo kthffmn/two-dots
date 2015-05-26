@@ -13,8 +13,6 @@ function Board(width) {
   this.redScore = 0;
   this.yellowScore = 0;
   this.squareCompleted = false;
-  this.disabledColor = false;
-  this.colors = ["blue", "green", "purple", "red", "yellow"];
 }
 
 Board.prototype.score = function() {
@@ -160,7 +158,6 @@ Board.prototype.destroyDots = function() {
     dotsOfColor.forEach(function(dot) {
       dot.destroy();
     });
-    this.disabledColor = color;
   } else {
     this.selectedDots.forEach(function(dot) {
       dot.destroy();
@@ -168,7 +165,6 @@ Board.prototype.destroyDots = function() {
   }
   this.selectedDots = [];
   this.selectedColor = "none";
-  this.disabledColor = false;
   this.squareCompleted = false;
   this.redrawColumns();
   this.updateScore();
@@ -260,15 +256,13 @@ Board.prototype.validCoordinates = function(x,y) {
 }
 
 Board.prototype.randomColor = function() {
-  if (this.disabledColor) {
-    var colours = [];
-    this.colors.forEach(function(color) {
-      if (!(color == this.disabledColor)) {
-        colours.push(color);
-      }
-    });
-    return sample(colours);
+  var colors = ["blue", "green", "purple", "red", "yellow"]
+  if (this.squareCompleted) {
+    var index = colors.indexOf(this.selectedColor);
+    colors.splice(index, 1);
+    console.log(colors);
+    return sample(colors);
   } else {
-    return sample(this.colors);
+    return sample(colors);
   }
 }
