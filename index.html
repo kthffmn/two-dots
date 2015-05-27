@@ -7,14 +7,17 @@
     <meta name="description" content="simple object-oriented JavaScript implementation of Two Dots">
     <meta name="author" content="Katie Hoffman">
     <title>Two Dots</title>
-    <link rel="icon" href="public/images/icon-1.png">
-    <link href="public/stylesheets/lib/bootstrap.min.css" rel="stylesheet">
-    <link href="public/stylesheets/lib/bootstrap-theme.min.css" rel="stylesheet">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="public/stylesheets/custom/style.css" rel="stylesheet">
+    <link rel="icon" href="public/images/icon.png">
+    <!-- jquery ui, bootstrap, font-awesome -->
+    <link href="public/lib/jquery/jquery-ui.structure.min.css"></link>
+    <link href="public/lib/jquery/jquery-ui.theme.min.css"></link>
+    <link href="public/lib/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="public/lib/bootstrap/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="public/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- custom -->
+    <link href="public/stylesheets/custom.css" rel="stylesheet">
   </head>
   <body role="document">
-
     <div class="container theme-showcase" role="main">
       <div class="jumbotron">
         <h1>Two Dots</h1>
@@ -26,10 +29,9 @@
           <div class="col-md-2"><div class="color-score red-score">0</div></div>
           <div class="col-md-2"><div class="color-score yellow-score">0</div></div>
           <div class="col-md-2"><div class="color-score total-score" id="score">0</div></div>
-        </div><!-- row -->
+        </div>
       </div>
     </div>
-
     <div class="container">
       <div class="row">
         <div class="col-md-6 col-md-offset-3 noselect" id="board">
@@ -38,13 +40,15 @@
         </div>
       </div>
     </div>
-    
-    <script src="public/javascripts/lib/jquery.min.js"></script>
-    <script src="public/javascripts/lib/bootstrap.min.js"></script>
-    <script src="public/javascripts/custom/01-prevent-text-highlighting.js"></script>
-    <script src="public/javascripts/custom/02-helper-functions.js"></script>
-    <script src="public/javascripts/custom/03-dot.js"></script>
-    <script src="public/javascripts/custom/04-board.js"></script>
-    <script src="public/javascripts/custom/05-builder.js"></script>
   </body>
+  <!-- jquery, jquery-ui, bootstrap -->
+  <script src="public/lib/jquery/jquery.min.js"></script>
+  <script src="public/lib/jquery/jquery-ui.min.js"></script>
+  <script src="public/lib/bootstrap/bootstrap.min.js"></script>
+  <!-- custom -->
+  <script src="public/javascripts/01-prevent-text-highlighting.js"></script>
+  <script src="public/javascripts/02-helper-functions.js"></script>
+  <script src="public/javascripts/03-dot.js"></script>
+  <script src="public/javascripts/04-board.js"></script>
+  <script src="public/javascripts/05-builder.js"></script>
 </html>
