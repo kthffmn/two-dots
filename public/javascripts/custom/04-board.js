@@ -87,17 +87,22 @@ Board.prototype.addHover = function() {
   $(".dot").mouseenter(function() {
     if (board.dragging) {
       var dot = board.turnjQueryToDot($(this));
-      if (board.validDrag(dot)) {
+      if (board.validDrag(dot) && !board.squareCompleted) {
         dot.activate();
       } else if (board.secondToLast(dot) && !board.squareCompleted) {
         board.deactivateLastDot();
       } else if (board.rightColor(dot) && board.isNeighbor(dot) && board.completeSquare(dot)) {
-        board.selectedDots.push(dot);
-        board.squareCompleted = true;
-        console.log("square!");
+        board.activateSquare(dot);
       }
     }
   });
+}
+
+Board.prototype.activateSquare = function(dot) {
+  this.selectedDots.push(dot);
+  this.squareCompleted = true;
+  var colorClass = "." + this.selectedColor;
+  $(colorClass).effect("shake");
 }
 
 Board.prototype.completeSquare = function(dot) {
