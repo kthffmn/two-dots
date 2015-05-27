@@ -26,6 +26,7 @@ html,body {
 
 .dot {
   cursor: pointer;
+  height: 30px;
 }
 
 .col-md-6 {

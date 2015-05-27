@@ -101,8 +101,8 @@ Board.prototype.addHover = function() {
 Board.prototype.activateSquare = function(dot) {
   this.selectedDots.push(dot);
   this.squareCompleted = true;
-  var colorClass = "." + this.selectedColor;
-  $(colorClass).effect("shake");
+  var selector = ".dot." + this.selectedColor;
+  $(selector).effect("shake");
 }
 
 Board.prototype.completeSquare = function(dot) {
@@ -158,22 +158,38 @@ Board.prototype.resetBoard = function() {
 
 Board.prototype.destroyDots = function() {
   if (this.squareCompleted) {
-    var color = this.selectedColor;
-    var dotsOfColor = this.findAllByColor(color);
-    dotsOfColor.forEach(function(dot) {
-      dot.destroy();
-    });
+    this.deleteAllDotsofColor();
   } else {
-    this.selectedDots.forEach(function(dot) {
-      dot.destroy();
-    });
+    this.deleteSelectedDots();
   }
+  this.resetAfterDestroying();
+}
+// var board = this;
+// setTimeout(function() {
+//   board.resetAfterDestroying();
+// }, 400);
+
+Board.prototype.resetAfterDestroying = function() {
   this.selectedDots = [];
   this.selectedColor = "none";
   this.squareCompleted = false;
   this.redrawColumns();
   this.updateScore();
   this.addListeners();
+}
+
+Board.prototype.deleteAllDotsofColor = function() {
+  var color = this.selectedColor;
+  var dotsOfColor = this.findAllByColor(color);
+  dotsOfColor.forEach(function(dot) {
+    dot.destroy();
+  });
+}
+
+Board.prototype.deleteSelectedDots = function() {
+  this.selectedDots.forEach(function(dot) {
+    dot.destroy();
+  });
 }
 
 Board.prototype.updateScore = function() {
@@ -265,7 +281,6 @@ Board.prototype.randomColor = function() {
   if (this.squareCompleted) {
     var index = colors.indexOf(this.selectedColor);
     colors.splice(index, 1);
-    console.log(colors);
     return sample(colors);
   } else {
     return sample(colors);

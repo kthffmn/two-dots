@@ -2,6 +2,7 @@ function Dot(coordinates, color, board) {
   this.coordinates = coordinates;
   this.color = color;
   this.board = board;
+  this.disabled = false;
 }
 
 Dot.prototype.deleteThisFromArray = function() {
@@ -35,6 +36,16 @@ Dot.prototype.destroy = function() {
   this.deleteThisFromArray();
   this.fillInSpaceLeft();
 };
+
+// this.disabled = true;
+// if (!this.disabled) {
+  // this.explode();
+// }
+// Dot.prototype.explode = function() {
+//   var domDot = this.findDOMObject();
+//   var icon = domDot.children().first()
+//   icon.effect("explode");
+// }
 
 Dot.prototype.column = function() {
   var x = this.coordinates[0];
