@@ -2,6 +2,10 @@ html,body {
   height:100%; 
 }
 
+#total-label {
+  margin-top: 10px;
+}
+
 .color-score {
   width: 30px;
   height: 30px;
@@ -9,6 +13,7 @@ html,body {
   color: white;
   text-align: center;
   padding-top: 5px;
+  margin: 5px;
 }
 
 .active {
@@ -78,5 +83,6 @@ html,body {
 }
 
 .total-score {
-  background: black;
+  background: white;
+  color: black;
 }
