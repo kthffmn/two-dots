@@ -31,21 +31,18 @@ Dot.prototype.fillInSpaceLeft = function() {
 }
 
 Dot.prototype.destroy = function() {
+  this.disabled = true;
   eval("this.board." + this.color + "Score += 1");
   this.adjustAboveDotCoordinates();
   this.deleteThisFromArray();
   this.fillInSpaceLeft();
 };
 
-// this.disabled = true;
-// if (!this.disabled) {
-  // this.explode();
-// }
-// Dot.prototype.explode = function() {
-//   var domDot = this.findDOMObject();
-//   var icon = domDot.children().first()
-//   icon.effect("explode");
-// }
+Dot.prototype.explode = function() {
+  var domDot = this.findDOMObject();
+  var icon = domDot.children().first()
+  icon.effect("explode");
+}
 
 Dot.prototype.column = function() {
   var x = this.coordinates[0];

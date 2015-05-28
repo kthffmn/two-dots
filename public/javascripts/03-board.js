@@ -164,10 +164,6 @@ Board.prototype.destroyDots = function() {
   }
   this.resetAfterDestroying();
 }
-// var board = this;
-// setTimeout(function() {
-//   board.resetAfterDestroying();
-// }, 400);
 
 Board.prototype.resetAfterDestroying = function() {
   this.selectedDots = [];
@@ -182,11 +178,17 @@ Board.prototype.deleteAllDotsofColor = function() {
   var color = this.selectedColor;
   var dotsOfColor = this.findAllByColor(color);
   dotsOfColor.forEach(function(dot) {
+    dot.explode();
+  });
+  dotsOfColor.forEach(function(dot) {
     dot.destroy();
   });
 }
 
 Board.prototype.deleteSelectedDots = function() {
+  this.selectedDots.forEach(function(dot) {
+    dot.explode();
+  });
   this.selectedDots.forEach(function(dot) {
     dot.destroy();
   });
