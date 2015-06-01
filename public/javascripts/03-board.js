@@ -151,6 +151,7 @@ Board.prototype.resetBoard = function() {
   });
   this.selectedDots = [];
   this.selectedColor = "none";
+  this.redrawTheseColumns = {};
 }
 
 Board.prototype.destroyDots = function() {
@@ -169,6 +170,14 @@ Board.prototype.resetAfterDestroying = function() {
   this.redrawColumns();
   this.updateScore();
   this.addListeners();
+  $(".bounce").removeClass("bounce");
+  this.redrawTheseColumns = {};
+}
+
+Board.prototype.bounceDots = function() {
+  var dots = $(".bounce");
+  console.log("bounce: " + dots.length);
+  dots.effect( "bounce", { times: 2 })
 }
 
 Board.prototype.deleteAllDotsofColor = function() {
@@ -209,7 +218,8 @@ Board.prototype.redrawColumns  = function() {
       newHTML += dot.html();
     });
     $("#column-" + x).html(newHTML);
-  });
+  }
+  this.bounceDots();
 }
 
 Board.prototype.makeHTML = function() {

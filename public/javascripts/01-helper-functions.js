@@ -1,3 +1,7 @@
+Array.prototype.includes = function(element) {
+  return this.indexOf(element) > -1;
+}
+
 function sample(array) {
   var random = array[Math.floor(Math.random()*array.length)];
   return random;
@@ -18,7 +22,4 @@ function getLaterElements(array, index) {
 function deleteAt(array, index) {
   array.splice(index, 1);
 }
-
-function hasKey() {
   
-}
