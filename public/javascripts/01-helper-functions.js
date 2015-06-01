@@ -3,10 +3,6 @@ function sample(array) {
   return random;
 }
 
-function elementIncluded(array, element) {
-  return array.indexOf(element) > -1;
-}
-
 function getLastElement(array) {
   return getLaterElements(array, 1);
 }
@@ -21,4 +17,8 @@ function getLaterElements(array, index) {
 
 function deleteAt(array, index) {
   array.splice(index, 1);
+}
+
+function hasKey() {
+  
 }

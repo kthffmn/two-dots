@@ -6,7 +6,7 @@ function Board(width) {
   this.selectedColor = "not yet defined";
   this.selectedDots = [];
   this.dragging = false;
-  this.redrawTheseColumns = [];
+  this.redrawTheseColumns = {};
   this.blueScore = 0;
   this.greenScore = 0;
   this.purpleScore = 0;
@@ -34,9 +34,6 @@ Board.prototype.makeBoard = function() {
 Board.prototype.createNewDot = function(x) {
   var dot = this.makeDot(x, 0);
   this.dots[x].unshift(dot);
-  if (!elementIncluded(this.redrawTheseColumns, x)) {
-    this.redrawTheseColumns.push(x);
-  }
 }
 
 Board.prototype.addListeners = function() {
@@ -106,7 +103,7 @@ Board.prototype.activateSquare = function(dot) {
 }
 
 Board.prototype.completeSquare = function(dot) {
-  if (elementIncluded(this.selectedDots, dot)) {
+  if (this.selectedDots.includes(dot)) {
     var tempDots = this.selectedDots;
     tempDots.push(dot);
     var index = tempDots.indexOf(dot);
@@ -137,11 +134,11 @@ Board.prototype.rightColor = function(dot) {
 
 Board.prototype.isNeighbor = function(dot) {
   var neighbors = this.lastSelectedDot().neighbors();
-  return elementIncluded(neighbors, dot);
+  return neighbors.includes(dot);
 }
 
 Board.prototype.notAlreadySelected = function(dot) {
-  return !elementIncluded(this.selectedDots, dot);
+  return !this.selectedDots.includes(dot);
 }
 
 Board.prototype.sameDot = function(dotA, dotB) {
@@ -205,7 +202,7 @@ Board.prototype.updateScore = function() {
 
 Board.prototype.redrawColumns  = function() {
   var board = this;
-  this.redrawTheseColumns.forEach(function(x) {
+  for (var x in board.redrawTheseColumns) {
     var column = board.dots[x];
     var newHTML = "";
     column.forEach(function(dot) {

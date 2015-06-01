@@ -3,6 +3,7 @@ function Dot(coordinates, color, board) {
   this.color = color;
   this.board = board;
   this.disabled = false;
+  this.bounce = false
 }
 
 Dot.prototype.deleteThisFromArray = function() {
@@ -33,15 +34,25 @@ Dot.prototype.fillInSpaceLeft = function() {
 Dot.prototype.destroy = function() {
   this.disabled = true;
   eval("this.board." + this.color + "Score += 1");
+  this.redrawThisColumn();
   this.adjustAboveDotCoordinates();
   this.deleteThisFromArray();
   this.fillInSpaceLeft();
 };
 
+
+Dot.prototype.redrawThisColumn = function() {
+  var x = this.coordinates[0];
+  var y = this.coordinates[1];
+  if (!(x in this.board.redrawTheseColumns) || this.board.redrawTheseColumns[x] < y) {
+    this.board.redrawTheseColumns[x] = y;
+  }
+}
+
 Dot.prototype.explode = function() {
   var domDot = this.findDOMObject();
   var icon = domDot.children().first()
-  icon.effect("explode");
+  icon.effect("explode", { pieces: 16 });
 }
 
 Dot.prototype.column = function() {
@@ -54,8 +65,18 @@ Dot.prototype.html = function() {
   var y = this.coordinates[1];
   var html = "<div data-xaxis=\"" + x + "\" data-yaxis=\"" + y + "\" class=\"row dot ";
   var htmlEnd = "\"><i class=\"fa fa-circle fa-2x\"></i></div>";
-  return html + this.color + htmlEnd;
-};
+  if (this.bouncy()) {
+    return html + "bounce " + this.color + htmlEnd;
+  } else {
+    return html + this.color + htmlEnd;
+  }
+}
+
+Dot.prototype.bouncy = function() {
+  var x = this.coordinates[0];
+  var y = this.coordinates[1];
+  return this.board.redrawTheseColumns[x] >= y;
+}
 
 Dot.prototype.neighbors = function() {
   var coords = this.neighborCoordinates();
